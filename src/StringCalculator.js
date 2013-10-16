@@ -1,17 +1,19 @@
 function StringCalculator() {
 }
 
-function sumOnlyNumericValues(numbers, total) {
-    if (numbers[i]) {
-        total += parseInt(numbers[i]);
+function compact(operands) {
+    var compactedOperands = [];
+    for(var i=0; i<operands.length; i++){
+        if(operands[i]) {
+            compactedOperands.push(operands[i]);
+        }
     }
-    return total;
+    return compactedOperands;
 }
-function sum(numbers) {
+function sum(operands) {
     var total = 0;
-
-    for (i = 0; i < numbers.length; i++) {
-        total = sumOnlyNumericValues(numbers, total);
+    for (var i = 0; i < operands.length; i++) {
+        total += parseInt(operands[i]);
     }
     return total;
 }
@@ -26,11 +28,13 @@ function exitIfExpressionContainsCharacters(expression) {
 function exitIfThereAreMoreThanTwoOperands(operands) {
     if (operands.length > 2) throw new Error('Too many operands on your expression');
 }
+
 StringCalculator.prototype.evaluate = function (expression) {
     if(!expression) return 0;
     exitIfExpressionContainsCharacters(expression);
 
     var operands = extractOperandsForAddition(expression);
     exitIfThereAreMoreThanTwoOperands(operands);
-    return sum(operands);
+    var compactedOperands = compact(operands);
+    return sum(compactedOperands);
 };
