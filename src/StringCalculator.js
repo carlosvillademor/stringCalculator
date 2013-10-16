@@ -3,21 +3,21 @@ function StringCalculator() {
 
 function compact(operands) {
     var compactedOperands = [];
-    for(var i=0; i<operands.length; i++){
-        if(operands[i]) {
+    for (var i = 0; i < operands.length; i++) {
+        if (operands[i]) {
             compactedOperands.push(operands[i]);
         }
     }
     return compactedOperands;
 }
-function sum(operands) {
+function evaluate(operands, operator) {
     var total = 0;
     for (var i = 0; i < operands.length; i++) {
         total += parseInt(operands[i]);
     }
     return total;
 }
-function extractOperandsForAddition(expression) {
+function extractOperandsFrom(expression) {
     return expression.split('+');
 }
 
@@ -29,12 +29,29 @@ function exitIfThereAreMoreThanTwoOperands(operands) {
     if (operands.length > 2) throw new Error('Too many operands on your expression');
 }
 
-StringCalculator.prototype.evaluate = function (expression) {
-    if(!expression) return 0;
-    exitIfExpressionContainsCharacters(expression);
+function exitIfThereAreMoreThanOneTypeOfOperator(expression) {
+    var hasPlusOperand = expression.indexOf('+') > -1;
+    var hasSubtractOperator = expression.indexOf('-') > -1;
+    if (hasPlusOperand && hasSubtractOperator) {
+        throw new Error("Too many operators");
+    }
+}
 
-    var operands = extractOperandsForAddition(expression);
+function determineOperatorFrom(expression) {
+    var operator = '+';
+    if (expression.indexOf('+') > -1) operator = '+';
+//    if (expression.indexOf('-') > -1) operator = '-';
+    return operator;
+}
+
+StringCalculator.prototype.evaluate = function (expression) {
+    if (!expression) return 0;
+    exitIfExpressionContainsCharacters(expression);
+    exitIfThereAreMoreThanOneTypeOfOperator(expression);
+
+    var operator = determineOperatorFrom(expression);
+    var operands = extractOperandsFrom(expression);
     exitIfThereAreMoreThanTwoOperands(operands);
-    var compactedOperands = compact(operands);
-    return sum(compactedOperands);
+
+    return evaluate(compact(operands), operator);
 };
