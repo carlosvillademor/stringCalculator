@@ -11,14 +11,19 @@ function compact(operands) {
     return compactedOperands;
 }
 function evaluate(operands, operator) {
-    var total = 0;
+    var total = operator === '+' ? 0 : parseInt(operands[0]);
     for (var i = 0; i < operands.length; i++) {
-        total += parseInt(operands[i]);
+        if(operator === '+') {
+            total += parseInt(operands[i]);
+        }
+        if(operator === '-' && i>0) {
+            total -= parseInt(operands[i]);
+        }
     }
     return total;
 }
-function extractOperandsFrom(expression) {
-    return expression.split('+');
+function extractOperandsFrom(expression, operator) {
+    return expression.split(operator);
 }
 
 function exitIfExpressionContainsCharacters(expression) {
@@ -40,7 +45,7 @@ function exitIfThereAreMoreThanOneTypeOfOperator(expression) {
 function determineOperatorFrom(expression) {
     var operator = '+';
     if (expression.indexOf('+') > -1) operator = '+';
-//    if (expression.indexOf('-') > -1) operator = '-';
+    if (expression.indexOf('-') > -1) operator = '-';
     return operator;
 }
 
@@ -50,7 +55,7 @@ StringCalculator.prototype.evaluate = function (expression) {
     exitIfThereAreMoreThanOneTypeOfOperator(expression);
 
     var operator = determineOperatorFrom(expression);
-    var operands = extractOperandsFrom(expression);
+    var operands = extractOperandsFrom(expression, operator);
     exitIfThereAreMoreThanTwoOperands(operands);
 
     return evaluate(compact(operands), operator);

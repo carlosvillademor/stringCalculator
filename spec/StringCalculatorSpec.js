@@ -21,6 +21,7 @@ describe('StringCalculator', function() {
 
     it('should evaluate expression with two operands and an operator', function() {
         expect(stringCalculator.evaluate('1+1')).toBe(2);
+        expect(stringCalculator.evaluate('2-1')).toBe(1);
     });
 
     it('should throw an exception when there are more than one operator of the same type in the expression', function(){
