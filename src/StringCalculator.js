@@ -26,6 +26,13 @@ function extractOperandsFrom(expression, operator) {
     return expression.split(operator);
 }
 
+function containsPlusOperatorIn(expression){
+    return expression.indexOf('+') > -1;
+}
+
+function containsMinusOperatorIn(expression){
+    return expression.indexOf('-') > -1;
+}
 function ifThereAreCharactersIn(expression){
     return expression.match(/([a-z]|[A-Z])+/);
 }
@@ -34,12 +41,8 @@ function exitIfThereAreMoreThanTwoOperands(operands) {
     if (operands.length > 2) throw new Error('Too many operands on your expression');
 }
 
-function exitIfThereAreMoreThanOneTypeOfOperator(expression) {
-    var hasPlusOperand = expression.indexOf('+') > -1;
-    var hasSubtractOperator = expression.indexOf('-') > -1;
-    if (hasPlusOperand && hasSubtractOperator) {
-        throw new Error("Too many operators");
-    }
+function ifThereAreDifferentOperatorsIn(expression) {
+    return containsPlusOperatorIn(expression) && containsMinusOperatorIn(expression);
 }
 
 function determineOperatorFrom(expression) {
@@ -67,8 +70,8 @@ function reject(isTrue, message){
 StringCalculator.prototype.evaluate = function (expression) {
     expression = standardise(expression);
     reject(ifThereAreCharactersIn(expression), "Error: Characters have been input");
-    exitIfThereAreMoreThanOneTypeOfOperator(expression);
-
+    reject(ifThereAreDifferentOperatorsIn(expression), "Error: Too many operators have been input");
+   
     var operator = determineOperatorFrom(expression);
     var operands = extractOperandsFrom(expression, operator);
     exitIfThereAreMoreThanTwoOperands(operands);
