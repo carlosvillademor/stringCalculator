@@ -57,6 +57,5 @@ StringCalculator.prototype.evaluate = function (expression) {
     var operator = determineOperatorFrom(expression);
     var operands = extractOperandsFrom(expression, operator);
     exitIfThereAreMoreThanTwoOperands(operands);
-
     return evaluate(compact(operands), operator);
 };
