@@ -26,8 +26,8 @@ function extractOperandsFrom(expression, operator) {
     return expression.split(operator);
 }
 
-function exitIfExpressionContainsCharacters(expression) {
-    if (expression.match(/([a-z]|[A-Z])+/)) throw new Error('No letters allowed');
+function ifThereAreCharactersIn(expression){
+    return expression.match(/([a-z]|[A-Z])+/);
 }
 
 function exitIfThereAreMoreThanTwoOperands(operands) {
@@ -58,9 +58,15 @@ function standardise(expression){
     }
 }
 
+function reject(isTrue, message){
+    if(isTrue){
+        throw new Error(message);
+    }
+}
+
 StringCalculator.prototype.evaluate = function (expression) {
     expression = standardise(expression);
-    exitIfExpressionContainsCharacters(expression);
+    reject(ifThereAreCharactersIn(expression), "Error: Characters have been input");
     exitIfThereAreMoreThanOneTypeOfOperator(expression);
 
     var operator = determineOperatorFrom(expression);
