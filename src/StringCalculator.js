@@ -49,8 +49,17 @@ function determineOperatorFrom(expression) {
     return operator;
 }
 
+function standardise(expression){
+    if(!expression){
+        return "0";
+    }
+    else{
+        return expression;
+    }
+}
+
 StringCalculator.prototype.evaluate = function (expression) {
-    if (!expression) return 0;
+    expression = standardise(expression);
     exitIfExpressionContainsCharacters(expression);
     exitIfThereAreMoreThanOneTypeOfOperator(expression);
 
